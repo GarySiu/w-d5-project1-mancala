@@ -9,9 +9,9 @@ mancala.hand = 0;
 mancala.direction = 0;
 mancala.continuePlaying = true;
 mancala.sow = function(row, index) {
+  mancala.checkVictory();
+  if(mancala.continuePlaying === false) { return; }
   if(mancala.checkValidSow(row, index)) {
-    mancala.checkVictory();
-    if (mancala.continuePlaying === false) { return; }
     mancala.takeSeeds(row,index);
     // Sowing moves to the right. Player 0 is facing towards the screen so their sowing goes relatively to the left. 
     row === 0 ? mancala.direction = -1 : mancala.direction = 1; // Set initial sow direction
@@ -72,12 +72,12 @@ mancala.checkVictory = function() {
   var enemyRow = 0;
   mancala.turn === 0 ? enemyRow = 1 : enemyRow = 0;
   if(!mancala.board[enemyRow].reduce(function(a,b){return a + b;})) {                                // If the enemy row is empty
-    mancala.mancala[mancala.turn] = mancala.board[mancala.turn].reduce(function(a,b){return a + b;}) // Add all the remaining seeds on your side
+    mancala.mancala[mancala.turn] += mancala.board[mancala.turn].reduce(function(a,b){return a + b;}) // Add all the remaining seeds on your side
     for(i = 0; i < mancala.board[mancala.turn].length; i++) {                                        // to your mancala. 
       mancala.board[mancala.turn][i] = 0; // Empty the board.
     }
     console.log('Game over');
     mancala.mancala[0] > mancala.mancala[1] ? console.log('Player 0 wins') : console.log ('Player 1 wins');
-    continuePlaying = false;
+    mancala.continuePlaying = false;
   }
 }
