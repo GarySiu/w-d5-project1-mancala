@@ -81,3 +81,6 @@ mancala.checkVictory = function() {
     mancala.continuePlaying = false;
   }
 }
+mancala.renderBoard = function() {
+  
+}
