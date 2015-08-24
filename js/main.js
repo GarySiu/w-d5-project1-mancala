@@ -5,10 +5,9 @@ mancala.board = [[  4,4,4,4,4,4  ],    // mancala.board[0] is the far side
 mancala.mancala = [0,0] // mancala.mancala[0] is the far side. We track it seperately because the players can't pick them as a move.
                         // Also we use it for scoring.
 mancala.turn = 1; //Alternates between 0 and 1. We'll start with the player facing toward the screen (near side)
-mancala.startRow = 0;
-mancala.startIndex = 0;
 mancala.hand = 0;
 mancala.direction = 0;
+mancala.oppositeRow;
 mancala.sow = function(row, index) {
   if(mancala.checkValidSow(row)) {
     mancala.takeSeeds(row,index);
@@ -29,17 +28,24 @@ mancala.sow = function(row, index) {
         }
         mancala.direction === 1 ? mancala.direction = -1 : mancala.direction = 1; //Switch direction
         console.log('Direction set to: ' + mancala.direction);
-        row === 0 ? row = 1 : row = 0;
-        mancala.board[row][index] = mancala.board[row][index] + 1; // Don't change the index when you're changing row
-        mancala.hand--;
+        row === 0 ? row = 1 : row = 0;// Don't change the index when you're changing row
+        mancala.board[row][index]++;  // Just sow right where you are
+        mancala.hand--;               // And remove a seed from the hand
         console.log(mancala.hand +' seeds in the hand');
       } else {
       index = index + mancala.direction;  // Advance to the next pit
-      mancala.board[row][index] = mancala.board[row][index] + 1; // Sow a seed
-      mancala.hand--; // Remove one from the hand
+      mancala.board[row][index]++;        // Sow a seed
+      mancala.hand--;                     // Remove one from the hand
       console.log(mancala.hand +' seeds in the hand');
       }
     }
+  if(mancala.hand === 0 && mancala.board[row][index] === 1 && row === mancala.turn){ // If you finish your turn on an empty spot on your row
+    mancala.board[row][index]--;                                                     // Remove that seed
+    mancala.mancala[mancala.turn]++;                                                 // and put it in your mancala
+    row === 0 ? mancala.oppositeRow = 1 : mancala.oppositeRow = 0;
+    mancala.mancala[mancala.turn] = mancala.board[mancala.oppositeRow][index];       // Put the seeds in the opposite row in your mancala
+    mancala.board[mancala.oppositeRow][index] = 0;                                   // (and empty the pit)
+  }
   mancala.turn === 0 ? mancala.turn = 1 : mancala.turn = 0;
   console.log('Player turn set to ' + mancala.turn);
   }
