@@ -4,30 +4,28 @@ mancala.board = [[  4,4,4,4,4,4  ],    // mancala.board[0] is the far side
                  [  4,4,4,4,4,4  ]];   // mancala.board[1] is the near side
 mancala.mancala = [0,0] // mancala.mancala[0] is the far side. We track it seperately because the players can't pick them as a move.
                         // Also we use it for scoring.
-mancala.turn = 0; //Alternates between 0 and 1
+mancala.turn = 1; //Alternates between 0 and 1. We'll start with the player facing toward the screen (near side)
 mancala.startRow = 0;
 mancala.startIndex = 0;
 mancala.hand = 0;
 mancala.direction = 0;
 mancala.sow = function(row, index) {
   if(mancala.checkValidSow(row)) {
-    // mancala.startRow = row; // Save the starting position. Do I even need to do this?!
-    // mancala.startIndex = index;
     mancala.takeSeeds(row,index);
-    // If the start row is 0, decrease the index until it === 0
-    // while incrementing each pocket by 1 and decrementing the hand by 1 until hand is empty
-    // if the start row is 1, increase the index until it === 5 
-    // while incrementing each pocket by 1 until hand is empty
+    // Sowing moves to the right. Player 0 is facing towards the screen so their sowing goes relatively to the left. 
     row === 0 ? mancala.direction = -1 : mancala.direction = 1; // Set initial sow direction
     console.log('Direction set to: ' + mancala.direction);
     while(mancala.hand > 0 ) {
       if(index + mancala.direction < 0 || index + mancala.direction > 5) {  // If you hit the end of the row
-        mancala.mancala[mancala.turn]++;                                    // You must be at a mancala. Put a seed in there.
-        console.log('Seeds in mancala: ' + mancala.mancala[mancala.turn]);
-        mancala.hand--; // Remove a seed from your hand
-        console.log(mancala.hand +' seeds in the hand');
-        if(mancala.hand === 0) {
-          return; // If your turn ends on the mancala it's still your turn.
+        if( (mancala.turn === 0 && index + mancala.direction < 0)||(mancala.turn === 1 && index + mancala.direction > 5) ){ // and you're on your row
+          mancala.mancala[mancala.turn]++;                                    // you must be at your mancala. Put a seed in there.
+          console.log('Seeds in mancala: ' + mancala.mancala[mancala.turn]);
+          mancala.hand--; // Remove a seed from your hand
+          console.log(mancala.hand +' seeds in the hand');
+          if(mancala.hand === 0) {
+            console.log('You finished your turn in your mancala. Take another turn.')
+            return;
+          }
         }
         mancala.direction === 1 ? mancala.direction = -1 : mancala.direction = 1; //Switch direction
         console.log('Direction set to: ' + mancala.direction);
