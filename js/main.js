@@ -21,17 +21,24 @@ mancala.sow = function(row, index) {
     row === 0 ? mancala.direction = -1 : mancala.direction = 1; // Set initial sow direction
     console.log('Direction set to: ' + mancala.direction);
     while(mancala.hand > 0 ) {
-      if(index + mancala.direction < 0 || index + mancala.direction > 5) {  // If you hit the end of the row, reverse direction on the row.
-        mancala.direction === 1 ? mancala.direction = -1 : mancala.direction = 1;
+      if(index + mancala.direction < 0 || index + mancala.direction > 5) {  // If you hit the end of the row
+        mancala.mancala[mancala.turn]++;                                    // You must be at a mancala. Put a seed in there.
+        console.log('Seeds in mancala: ' + mancala.mancala[mancala.turn]);
+        mancala.hand--; // Remove a seed from your hand
+        console.log(mancala.hand +' seeds in the hand');
+        if(mancala.hand === 0) {
+          return; // If your turn ends on the mancala it's still your turn.
+        }
+        mancala.direction === 1 ? mancala.direction = -1 : mancala.direction = 1; //Switch direction
         console.log('Direction set to: ' + mancala.direction);
         row === 0 ? row = 1 : row = 0;
         mancala.board[row][index] = mancala.board[row][index] + 1; // Don't change the index when you're changing row
         mancala.hand--;
         console.log(mancala.hand +' seeds in the hand');
       } else {
-      index = index + mancala.direction;
-      mancala.board[row][index] = mancala.board[row][index] + 1;
-      mancala.hand--;
+      index = index + mancala.direction;  // Advance to the next pit
+      mancala.board[row][index] = mancala.board[row][index] + 1; // Sow a seed
+      mancala.hand--; // Remove one from the hand
       console.log(mancala.hand +' seeds in the hand');
       }
     }
