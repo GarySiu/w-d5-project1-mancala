@@ -6,10 +6,10 @@ mancala.mancala = [0,0] // mancala.mancala[0] is the far side. We track it seper
                         // Also we use it for scoring.
 mancala.turn = 1; //Alternates between 0 and 1. We'll start with the player sitting closest the screen (near side)
 mancala.hand = 0;
-mancala.direction = 0;
 mancala.continuePlaying = true;
 $(document).ready(function(){
   mancala.renderBoard();
+  mancala.setListeners();
 });
 mancala.sow = function(row, index) {
   mancala.checkVictory();
@@ -28,6 +28,8 @@ mancala.sow = function(row, index) {
           mancala.hand--; // Remove a seed from your hand
           mancala.renderBoard();
           console.log(mancala.hand +' seeds in the hand');
+          mancala.checkLoss();
+          if(mancala.continuePlaying === false) { return; }
           if(mancala.hand === 0) {
             console.log('You finished your turn in your mancala. Take another turn.')
             return;
@@ -53,9 +55,13 @@ mancala.sow = function(row, index) {
     mancala.mancala[mancala.turn]++;                                                 // and put it in your mancala
     var oppositeRow = 0;
     row === 0 ? oppositeRow = 1 : oppositeRow = 0;
-    mancala.mancala[mancala.turn] = mancala.board[oppositeRow][index];       // Put the seeds in the opposite row in your mancala
-    mancala.board[mancala.oppositeRow][index] = 0;                                   // (and empty the pit)
+    mancala.mancala[mancala.turn] += mancala.board[oppositeRow][index];       // Put the seeds in the opposite row in your mancala
+    console.log('Captured ' + mancala.board[oppositeRow][index] + ' seeds')
+    mancala.board[oppositeRow][index] = 0;                                   // (and empty the pit)
+    mancala.renderBoard();
   }
+  mancala.checkLoss();
+  if(mancala.continuePlaying === false) { return; }
   mancala.turn === 0 ? mancala.turn = 1 : mancala.turn = 0;
   console.log('Player turn set to ' + mancala.turn);
   }
@@ -84,6 +90,21 @@ mancala.checkVictory = function() {
       mancala.board[mancala.turn][i] = 0; // Empty the board.
     }
     console.log('Game over');
+    mancala.renderBoard();
+    mancala.mancala[0] > mancala.mancala[1] ? console.log('Player 0 wins') : console.log ('Player 1 wins');
+    mancala.continuePlaying = false;
+  }
+}
+mancala.checkLoss = function() { // This is the opposite of dry. I really need to figure out how to combine this and checkVictory()
+  var enemyRow = 0;
+  mancala.turn === 0 ? enemyRow = 1 : enemyRow = 0;
+  if(!mancala.board[mancala.turn].reduce(function(a,b){return a + b;})) {                     // If your row is empty
+    mancala.mancala[enemyRow] += mancala.board[enemyRow].reduce(function(a,b){return a + b;}) // Add all the remaining seeds on the enemies side
+    for(i = 0; i < mancala.board[enemyRow].length; i++) {                                 // to the enemy mancala. 
+      mancala.board[enemyRow][i] = 0; // Empty the board.
+    }
+    console.log('Game over');
+    mancala.renderBoard();
     mancala.mancala[0] > mancala.mancala[1] ? console.log('Player 0 wins') : console.log ('Player 1 wins');
     mancala.continuePlaying = false;
   }
@@ -97,4 +118,7 @@ mancala.renderBoard = function() {
   for(i = 0; i < mancala.board[1].length; i++) { //repeating myself on the off chance I decide to allow assymmetrical rows
     $('#near-pit-'+i).text(mancala.board[1][i]);
   }
+}
+mancala.setListeners = function() {
+
 }
