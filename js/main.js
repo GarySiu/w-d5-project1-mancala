@@ -4,13 +4,17 @@ mancala.board = [[  4,4,4,4,4,4  ],    // mancala.board[0] is the far side
                  [  4,4,4,4,4,4  ]];   // mancala.board[1] is the near side
 mancala.mancala = [0,0] // mancala.mancala[0] is the far side. We track it seperately because the players can't pick them as a move.
                         // Also we use it for scoring.
-mancala.turn = 1; //Alternates between 0 and 1. We'll start with the player facing toward the screen (near side)
+mancala.turn = 1; //Alternates between 0 and 1. We'll start with the player sitting closest the screen (near side)
 mancala.hand = 0;
 mancala.direction = 0;
 mancala.continuePlaying = true;
+$(document).ready(function(){
+  mancala.renderBoard();
+});
 mancala.sow = function(row, index) {
   mancala.checkVictory();
   if(mancala.continuePlaying === false) { return; }
+  mancala.renderBoard();
   if(mancala.checkValidSow(row, index)) {
     mancala.takeSeeds(row,index);
     // Sowing moves to the right. Player 0 is facing towards the screen so their sowing goes relatively to the left. 
@@ -22,6 +26,7 @@ mancala.sow = function(row, index) {
           mancala.mancala[mancala.turn]++;                                    // you must be at your mancala. Put a seed in there.
           console.log('Seeds in mancala: ' + mancala.mancala[mancala.turn]);
           mancala.hand--; // Remove a seed from your hand
+          mancala.renderBoard();
           console.log(mancala.hand +' seeds in the hand');
           if(mancala.hand === 0) {
             console.log('You finished your turn in your mancala. Take another turn.')
@@ -33,11 +38,13 @@ mancala.sow = function(row, index) {
         row === 0 ? row = 1 : row = 0;// Don't change the index when you're changing row
         mancala.board[row][index]++;  // Just sow right where you are
         mancala.hand--;               // And remove a seed from the hand
+        mancala.renderBoard();
         console.log(mancala.hand +' seeds in the hand');
       } else {
       index = index + mancala.direction;  // Advance to the next pit
       mancala.board[row][index]++;        // Sow a seed
       mancala.hand--;                     // Remove one from the hand
+      mancala.renderBoard();
       console.log(mancala.hand +' seeds in the hand');
       }
     }
@@ -46,7 +53,7 @@ mancala.sow = function(row, index) {
     mancala.mancala[mancala.turn]++;                                                 // and put it in your mancala
     var oppositeRow = 0;
     row === 0 ? oppositeRow = 1 : oppositeRow = 0;
-    mancala.mancala[mancala.turn] = mancala.board[mancala.oppositeRow][index];       // Put the seeds in the opposite row in your mancala
+    mancala.mancala[mancala.turn] = mancala.board[oppositeRow][index];       // Put the seeds in the opposite row in your mancala
     mancala.board[mancala.oppositeRow][index] = 0;                                   // (and empty the pit)
   }
   mancala.turn === 0 ? mancala.turn = 1 : mancala.turn = 0;
@@ -82,5 +89,12 @@ mancala.checkVictory = function() {
   }
 }
 mancala.renderBoard = function() {
-  
+  $('#mancala-0').text(mancala.mancala[0])
+  $('#mancala-1').text(mancala.mancala[1])
+  for(i = 0; i < mancala.board[0].length; i++) {
+    $('#far-pit-'+i).text(mancala.board[0][i]);
+  }
+  for(i = 0; i < mancala.board[1].length; i++) { //repeating myself on the off chance I decide to allow assymmetrical rows
+    $('#near-pit-'+i).text(mancala.board[1][i]);
+  }
 }

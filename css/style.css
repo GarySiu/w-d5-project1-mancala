@@ -29,6 +29,7 @@ div {
   border: 1px solid #000;
   border-radius: 40px;
   vertical-align: top;
+  padding-top: 30px;
 }
 .mancala {
   display: inline-block;
@@ -37,4 +38,5 @@ div {
   border: 1px solid #000;
   border-radius: 40px;
   vertical-align: top;
+  padding-top: 70px;
 }
