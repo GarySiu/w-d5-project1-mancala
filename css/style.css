@@ -24,6 +24,8 @@ body {
 }
 .text {
   color: #FFF;
+  font-family: 'Judson', serif;
+  font-size: 35px;
 }
 .recessed {
   border: 3px solid #000;
@@ -35,7 +37,7 @@ body {
   height: 80px;
   border-radius: 40px;
   vertical-align: top;
-  padding-top: 30px;
+  padding-top: 14px;
   margin: 1px 3px;
 }
 .mancala {
@@ -44,5 +46,5 @@ body {
   height: 162px;
   border-radius: 40px;
   vertical-align: top;
-  padding-top: 70px;
+  padding-top: 55px;
 }
