@@ -120,5 +120,14 @@ mancala.renderBoard = function() {
   }
 }
 mancala.setListeners = function() {
-
+  $('.near').each(function(index, element) {
+    $(element).on('click', function(e) {
+      mancala.sow(1,index);
+    })
+  })
+  $('.far').each(function(index, element) {
+    $(element).on('click', function(e) {
+      mancala.sow(0,index);
+    })
+  })
 }
