@@ -134,17 +134,18 @@ mancala.renderChange = function() {
     if(renderNext[0] === "m") {
       var temp = '#mancala-'+renderNext[1];
       $(temp).hide().text(mancala.mancala[renderNext[1]]);
-      var delayStagger = 200 * i + 200;
-      $(temp).delay(delayStagger).slideDown(100);
+      // var delayStagger = 200 * i + 200;
+      // $(temp).delay(delayStagger).slideDown(100);
     } else {
       // debugger;
       parseInt(renderNext[0]) === 0 ? row = 'far' : row = 'near';
       var temp = '#'+row+'-pit-'+renderNext[1];
       $(temp).hide().text(mancala.board[renderNext[0]][renderNext[1]]); // Hide each altered element and update it's text
-      var delayStagger = 200 * i + 200;           // Each successive element gets 200ms more delay before it appears
-      $(temp).delay(delayStagger).slideDown(100); // After the incremental delay, slide the updated text down
-      // console.log(mancala.renderQueue[i]);
     }
+    var delayStagger = 50 * i + 50;           // Each successive element gets 200ms more delay before it appears
+    $(temp).delay(delayStagger).fadeIn(80); // After the incremental delay, slide the updated text down
+      // console.log(mancala.renderQueue[i]);
+    // }
   }
   mancala.renderQueue = [];
 }
