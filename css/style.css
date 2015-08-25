@@ -26,6 +26,10 @@ body {
   color: #FFF;
   font-family: 'Judson', serif;
   font-size: 35px;
+  text-shadow: 5px 5px 2px black;
+}
+.highlight {
+  color: #FF5;
 }
 .recessed {
   border: 3px solid #000;
