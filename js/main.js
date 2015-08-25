@@ -13,6 +13,7 @@ $(document).ready(function(){
   mancala.setListeners();
 });
 mancala.sow = function(row, index) {
+  if(mancala.continuePlaying === false) { return; }
   mancala.checkVictory();
   if(mancala.continuePlaying === false) { return; }
   // if(mancala.renderQueue !== []) {mancala.renderBoard()};
@@ -120,7 +121,7 @@ mancala.checkLoss = function() { // This is the opposite of DRY. I really need t
       mancala.board[enemyRow][i] = 0; // Empty the board.
     }
     console.log('Game over');
-    // mancala.renderBoard();
+    mancala.renderEverything();
     mancala.mancala[0] > mancala.mancala[1] ? console.log('Player 0 wins') : console.log ('Player 1 wins');
     mancala.continuePlaying = false;
   }
