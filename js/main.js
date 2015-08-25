@@ -9,13 +9,13 @@ mancala.hand = 0;
 mancala.renderQueue = [];
 mancala.continuePlaying = true;
 $(document).ready(function(){
-  mancala.renderBoard();
+  mancala.renderEverything();
   mancala.setListeners();
 });
 mancala.sow = function(row, index) {
   mancala.checkVictory();
   if(mancala.continuePlaying === false) { return; }
-  mancala.renderBoard();
+  // if(mancala.renderQueue !== []) {mancala.renderBoard()};
   if(mancala.checkValidSow(row, index)) {
     mancala.takeSeeds(row,index);
     // Sowing moves to the right. Player 0 is facing towards the screen so their sowing goes relatively to the left. 
@@ -28,12 +28,13 @@ mancala.sow = function(row, index) {
           mancala.renderQueue.push(['m'+','+mancala.turn]);
           console.log('Seeds in mancala: ' + mancala.mancala[mancala.turn]);
           mancala.hand--; // Remove a seed from your hand
-          mancala.renderBoard();
+          // mancala.renderBoard();
           console.log(mancala.hand +' seeds in the hand');
           mancala.checkLoss();
           if(mancala.continuePlaying === false) { return; }
           if(mancala.hand === 0) {
             console.log('You finished your turn in your mancala. Take another turn.')
+            mancala.renderChange();
             return;
           }
         }
@@ -43,30 +44,34 @@ mancala.sow = function(row, index) {
         mancala.board[row][index]++;  // Just sow right where you are
         mancala.renderQueue.push([row+','+index]); // Record changes
         mancala.hand--;               // And remove a seed from the hand
-        mancala.renderBoard();
+        // mancala.renderBoard();
         console.log(mancala.hand +' seeds in the hand');
       } else {
       index = index + mancala.direction;  // Advance to the next pit
       mancala.board[row][index]++;        // Sow a seed
       mancala.renderQueue.push([row+','+index]); // Record changes
       mancala.hand--;                     // Remove one from the hand
-      mancala.renderBoard();
+      // mancala.renderBoard();
       console.log(mancala.hand +' seeds in the hand');
       }
     }
   if(mancala.hand === 0 && mancala.board[row][index] === 1 && row === mancala.turn){ // If you finish your turn on an empty spot on your row
     mancala.board[row][index]--;                                                     // Remove that seed
     mancala.mancala[mancala.turn]++;                                                 // and put it in your mancala
+    mancala.renderQueue.push(['m'+','+mancala.turn]);
     var oppositeRow = 0;
     row === 0 ? oppositeRow = 1 : oppositeRow = 0;
     mancala.mancala[mancala.turn] += mancala.board[oppositeRow][index];       // Put the seeds in the opposite row in your mancala
     console.log('Captured ' + mancala.board[oppositeRow][index] + ' seeds')
     mancala.board[oppositeRow][index] = 0;                                   // (and empty the pit)
-    mancala.renderBoard();
+    // debugger;
+    mancala.renderQueue.push([oppositeRow + ','+index]);
+    mancala.renderChange();
   }
   mancala.checkLoss();
   if(mancala.continuePlaying === false) { return; }
   mancala.turn === 0 ? mancala.turn = 1 : mancala.turn = 0;
+  mancala.renderChange();
   console.log('Player turn set to ' + mancala.turn);
   }
 }
@@ -95,8 +100,14 @@ mancala.checkVictory = function() {
       mancala.board[mancala.turn][i] = 0; // Empty the board.
     }
     console.log('Game over');
-    mancala.renderBoard();
-    mancala.mancala[0] > mancala.mancala[1] ? console.log('Player 0 wins') : console.log ('Player 1 wins');
+    mancala.renderEverything();
+    if(mancala.mancala[0] === mancala.mancala[1]) {
+      console.log("It's a draw");
+    } else if(mancala.mancala[0] > mancala.mancala[1]) {
+      console.log('Player 0 wins');
+    } else {
+      console.log ('Player 1 wins');
+    }
     mancala.continuePlaying = false;
   }
 }
@@ -109,12 +120,34 @@ mancala.checkLoss = function() { // This is the opposite of DRY. I really need t
       mancala.board[enemyRow][i] = 0; // Empty the board.
     }
     console.log('Game over');
-    mancala.renderBoard();
+    // mancala.renderBoard();
     mancala.mancala[0] > mancala.mancala[1] ? console.log('Player 0 wins') : console.log ('Player 1 wins');
     mancala.continuePlaying = false;
   }
 }
-mancala.renderBoard = function() {
+mancala.renderChange = function() {
+  var row = '';
+  for(i = 0; i < mancala.renderQueue.length; i++) {
+    var renderNext = mancala.renderQueue[i];
+    renderNext = renderNext[0].split(',')
+    if(renderNext[0] === "m") {
+      var temp = '#mancala-'+renderNext[1];
+      $(temp).hide().text(mancala.mancala[renderNext[1]]);
+      var delayStagger = 200 * i + 200;
+      $(temp).delay(delayStagger).slideDown(100);
+    } else {
+      // debugger;
+      parseInt(renderNext[0]) === 0 ? row = 'far' : row = 'near';
+      var temp = '#'+row+'-pit-'+renderNext[1];
+      $(temp).hide().text(mancala.board[renderNext[0]][renderNext[1]]); // Hide each altered element and update it's text
+      var delayStagger = 200 * i + 200;           // Each successive element gets 200ms more delay before it appears
+      $(temp).delay(delayStagger).slideDown(100); // After the incremental delay, slide the updated text down
+      // console.log(mancala.renderQueue[i]);
+    }
+  }
+  mancala.renderQueue = [];
+}
+mancala.renderEverything = function() {
   $('#mancala-0').text(mancala.mancala[0])
   $('#mancala-1').text(mancala.mancala[1])
   for(i = 0; i < mancala.board[0].length; i++) {
