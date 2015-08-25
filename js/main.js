@@ -6,6 +6,7 @@ mancala.mancala = [0,0] // mancala.mancala[0] is the far side. We track it seper
                         // Also we use it for scoring.
 mancala.turn = 1; //Alternates between 0 and 1. We'll start with the player sitting closest the screen (near side)
 mancala.hand = 0;
+mancala.renderQueue = [];
 mancala.continuePlaying = true;
 $(document).ready(function(){
   mancala.renderBoard();
@@ -24,6 +25,7 @@ mancala.sow = function(row, index) {
       if(index + mancala.direction < 0 || index + mancala.direction > 5) {  // If you hit the end of the row
         if( (mancala.turn === 0 && index + mancala.direction < 0)||(mancala.turn === 1 && index + mancala.direction > 5) ){ // and you're on your row
           mancala.mancala[mancala.turn]++;                                    // you must be at your mancala. Put a seed in there.
+          mancala.renderQueue.push(['m'+','+mancala.turn]);
           console.log('Seeds in mancala: ' + mancala.mancala[mancala.turn]);
           mancala.hand--; // Remove a seed from your hand
           mancala.renderBoard();
@@ -39,12 +41,14 @@ mancala.sow = function(row, index) {
         console.log('Direction set to: ' + mancala.direction);
         row === 0 ? row = 1 : row = 0;// Don't change the index when you're changing row
         mancala.board[row][index]++;  // Just sow right where you are
+        mancala.renderQueue.push([row+','+index]); // Record changes
         mancala.hand--;               // And remove a seed from the hand
         mancala.renderBoard();
         console.log(mancala.hand +' seeds in the hand');
       } else {
       index = index + mancala.direction;  // Advance to the next pit
       mancala.board[row][index]++;        // Sow a seed
+      mancala.renderQueue.push([row+','+index]); // Record changes
       mancala.hand--;                     // Remove one from the hand
       mancala.renderBoard();
       console.log(mancala.hand +' seeds in the hand');
@@ -78,6 +82,7 @@ mancala.checkValidSow = function(row, index) {
 }
 mancala.takeSeeds = function(row, index) {
   mancala.hand = mancala.board[row][index]; // move the seeds from the board to the hand
+  mancala.renderQueue.push([row+','+index]);
   console.log(mancala.hand +' seeds in the hand');
   mancala.board[row][index] = 0;
 }
