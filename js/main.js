@@ -95,12 +95,12 @@ mancala.checkVictory = function() {
     mancala.continuePlaying = false;
   }
 }
-mancala.checkLoss = function() { // This is the opposite of dry. I really need to figure out how to combine this and checkVictory()
+mancala.checkLoss = function() { // This is the opposite of DRY. I really need to figure out how to combine this and checkVictory()
   var enemyRow = 0;
   mancala.turn === 0 ? enemyRow = 1 : enemyRow = 0;
   if(!mancala.board[mancala.turn].reduce(function(a,b){return a + b;})) {                     // If your row is empty
     mancala.mancala[enemyRow] += mancala.board[enemyRow].reduce(function(a,b){return a + b;}) // Add all the remaining seeds on the enemies side
-    for(i = 0; i < mancala.board[enemyRow].length; i++) {                                 // to the enemy mancala. 
+    for(i = 0; i < mancala.board[enemyRow].length; i++) {                                     // to the enemy mancala. 
       mancala.board[enemyRow][i] = 0; // Empty the board.
     }
     console.log('Game over');

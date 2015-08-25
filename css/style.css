@@ -5,37 +5,43 @@ html {
 *, *:before, *:after {
   box-sizing: inherit;
 }
-div {
-  /*border: 1px solid black;*/
-  /*margin: 0;*/
-  /*padding: 0;*/
+body {
+  margin: 0;
 }
-#main-container{
-  margin: auto 0;
-  height: 160px;
-  width: 100%;
+#board{
+  margin: 160px auto 0 auto;
+  background: url(../images/bg_texture___wood_by_nortago.jpg);
+  width: 728px;
+  padding: 30px 0;
+  /*margin-top: 160px;*/
+  border-radius: 82px;
   text-align: center;
-  margin-top: 160px;
 }
-#board-container {
-  width: 480px;
+#pit-container {
+  width: 516px;
   height: 160px;
   display: inline-block;
+}
+.text {
+  color: #FFF;
+}
+.recessed {
+  border: 3px solid #000;
+  box-shadow: inset 0px 0px 10px 5px rgba(0, 0, 0, 0.4);
 }
 .pit {
   display: inline-block;
   width: 80px;
   height: 80px;
-  border: 1px solid #000;
   border-radius: 40px;
   vertical-align: top;
   padding-top: 30px;
+  margin: 1px 3px;
 }
 .mancala {
   display: inline-block;
   width: 80px;
-  height: 160px;
-  border: 1px solid #000;
+  height: 162px;
   border-radius: 40px;
   vertical-align: top;
   padding-top: 70px;
