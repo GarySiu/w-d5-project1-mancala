@@ -104,10 +104,13 @@ mancala.checkVictory = function() {
     mancala.renderEverything();
     if(mancala.mancala[0] === mancala.mancala[1]) {
       console.log("It's a draw");
+      $('#status h2').text("It's a draw");
     } else if(mancala.mancala[0] > mancala.mancala[1]) {
       console.log('Player 0 wins');
+      $('#status h2').text('Player 0 wins');
     } else {
       console.log ('Player 1 wins');
+      $('#status h2').text('Player 1 wins');
     }
     mancala.continuePlaying = false;
   }
