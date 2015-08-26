@@ -6,7 +6,9 @@ html {
   box-sizing: inherit;
 }
 body {
-  margin: 0;
+  font-family: 'Judson', serif;
+  font-size: 20px;
+  /*margin: 0;*/
 }
 h1, h2, h3 {
   font-family: 'Bevan', cursive;
@@ -23,7 +25,8 @@ h2 {
   margin: 0;
 }
 h3 {
-  display: none;
+  font-size: 20px;
+  /*display: none;*/
 }
 div {
   font-family: 'Judson', serif;
@@ -41,6 +44,9 @@ div {
   width: 516px;
   height: 160px;
   display: inline-block;
+}
+.rules {
+  display: none;
 }
 .text {
   color: #FFF;

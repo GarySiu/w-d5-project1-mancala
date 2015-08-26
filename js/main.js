@@ -199,6 +199,7 @@ mancala.setListeners = function() {
     })
   })
   $('#status h3').on('click', mancala.newGame)
+  $('#h2p').on('click', mancala.toggleRules);
 }
 mancala.newGame = function() {
   if($('#status h3').text() === 'Play again?')
@@ -211,4 +212,7 @@ mancala.newGame = function() {
   mancala.renderEverything();
   $('#status h2').text('');
   $('#status h3').text('Player 1 (bottom row) starts');
+}
+mancala.toggleRules = function() {
+  $('.rules').toggle();
 }
