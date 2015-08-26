@@ -35,6 +35,8 @@ mancala.sow = function(row, index) {
           if(mancala.continuePlaying === false) { return; }
           if(mancala.hand === 0) {
             console.log('You finished your turn in your mancala. Take another turn.')
+            $('#status h3').text('You finished your turn in your mancala. Take another turn.');
+            $('#status h3').toggle(true);
             mancala.renderChange();
             return;
           }
@@ -72,6 +74,8 @@ mancala.sow = function(row, index) {
   mancala.checkLoss();
   if(mancala.continuePlaying === false) { return; }
   mancala.turn === 0 ? mancala.turn = 1 : mancala.turn = 0;
+  mancala.turn === 0 ? $('#status h3').text('Player 2\'s turn') : $('#status h3').text('Player 1\'s turn');
+  $('#status h3').toggle(true);
   mancala.renderChange();
   console.log('Player turn set to ' + mancala.turn);
   }
@@ -105,12 +109,18 @@ mancala.checkVictory = function() {
     if(mancala.mancala[0] === mancala.mancala[1]) {
       console.log("It's a draw");
       $('#status h2').text("It's a draw");
+      $('#status h3').text('Play again?');
+      $('#status h3').toggle(true);
     } else if(mancala.mancala[0] > mancala.mancala[1]) {
       console.log('Player 0 wins');
-      $('#status h2').text('Player 0 wins');
+      $('#status h2').text('Player 2 wins');
+      $('#status h3').text('Play again?');
+      $('#status h3').toggle(true);
     } else {
       console.log ('Player 1 wins');
       $('#status h2').text('Player 1 wins');
+      $('#status h3').text('Play again?');
+      $('#status h3').toggle(true);
     }
     mancala.continuePlaying = false;
   }
@@ -125,7 +135,22 @@ mancala.checkLoss = function() { // This is the opposite of DRY. I really need t
     }
     console.log('Game over');
     mancala.renderEverything();
-    mancala.mancala[0] > mancala.mancala[1] ? console.log('Player 0 wins') : console.log ('Player 1 wins');
+    if(mancala.mancala[0] === mancala.mancala[1]) {
+      console.log("It's a draw");
+      $('#status h2').text("It's a draw");
+      $('#status h3').text('Play again?');
+      $('#status h3').toggle(true);
+    } else if(mancala.mancala[0] > mancala.mancala[1]) {
+      console.log('Player 0 wins');
+      $('#status h2').text('Player 2 wins');
+      $('#status h3').text('Play again?');
+      $('#status h3').toggle(true);
+    } else {
+      console.log ('Player 1 wins');
+      $('#status h2').text('Player 1 wins');
+      $('#status h3').text('Play again?');
+      $('#status h3').toggle(true);
+    }
     mancala.continuePlaying = false;
   }
 }
@@ -173,4 +198,17 @@ mancala.setListeners = function() {
       mancala.sow(0,index);
     })
   })
+  $('#status h3').on('click', mancala.newGame)
+}
+mancala.newGame = function() {
+  if($('#status h3').text() === 'Play again?')
+  mancala.board = [[  4,4,4,4,4,4  ],    // mancala.board[0] is the far side
+                   [  4,4,4,4,4,4  ]];   // mancala.board[1] is the near side
+  mancala.mancala = [0,0]
+  mancala.turn = 1;
+  mancala.renderQueue = [];
+  mancala.continuePlaying = true;
+  mancala.renderEverything();
+  $('#status h2').text('');
+  $('#status h3').text('Player 1 (bottom row) starts');
 }

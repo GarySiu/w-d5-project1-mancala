@@ -14,14 +14,20 @@ h1, h2, h3 {
 h1 {
   text-align: center;
   font-size: 100px;
-  margin: 20px auto;
+  margin: 20px auto 20px auto;
+  color: #502317;
 }
 h2 {
   font-size: 40px;
   text-align: center;
+  margin: 0;
+}
+h3 {
+  display: none;
 }
 div {
   font-family: 'Judson', serif;
+  text-align: center;
 }
 #board{
   margin: 0 auto;
@@ -30,7 +36,6 @@ div {
   padding: 30px 0;
   border-radius: 82px;
   text-align: center;
-  /*display: none;*/
 }
 #pit-container {
   width: 516px;
@@ -42,6 +47,9 @@ div {
   font-family: 'Judson', serif;
   font-size: 35px;
   text-shadow: 5px 5px 2px black;
+}
+.inactive {
+  color: #888;
 }
 .highlight {
   color: #FF5;
