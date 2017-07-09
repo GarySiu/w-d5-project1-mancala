@@ -1,4 +1,4 @@
-# # Project 1 - Mancala
+# Project 1 - Mancala
 
 ## Technologies used
 
