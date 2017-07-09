@@ -12,7 +12,7 @@
 For this project I concentrated on producing a working model first before manipulating the DOM based on the model.
 I've tried to integrate as many of the techniques we learnt as possible.
 
-## Installation
+## Installation
 
 It's a web game: just open the index.html! Instructions are built into the game.
 
